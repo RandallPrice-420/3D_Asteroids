@@ -14,8 +14,7 @@ public class SpaceshipManager : MonoBehaviour
 
     #region .  Private Properties  .
 
-    private readonly string _assetsPath     = "Assets/3rd-Party/SpaceshipFighter/Prefabs";
-
+    private readonly string _assetsPath     = "Assets/3rd-Party/Spaceships/Prefabs";
     private Spaceship       _spaceship;
     private List<Spaceship> _spaceshipsList = new();
 

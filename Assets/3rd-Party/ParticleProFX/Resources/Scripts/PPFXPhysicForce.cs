@@ -12,9 +12,9 @@ using System.Collections;
 
 public class PPFXPhysicForce : MonoBehaviour {
 	
-	public float radius = 10f;
-	public float force = 10f;
-	public float delay = 0.2f;
+	public float radius = 10.0f;
+	public float force  =  0.0f;
+	public float delay  =  0.2f;
 	
 	Collider[] colliders;
 	
@@ -44,6 +44,8 @@ public class PPFXPhysicForce : MonoBehaviour {
 		}
 		
 		yield return null;
-	}
 
-}
+	}	// Explode()
+
+
+}	// class PPFXPhysicForce

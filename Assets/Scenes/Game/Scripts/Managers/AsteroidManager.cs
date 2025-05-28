@@ -60,8 +60,10 @@ public class AsteroidManager : Singleton<AsteroidManager>
     // -------------------
     //   //_maximumScale
     //   //_minimumScale
-    //   _assetsPath
+    //   _asteroidsAssetsPath
+    //   _explosionsAssetsPath
     //   _asteroidsList
+    //   _explosionsList
     //   _isExploding
     //   _maximumX
     //   _minimumX
@@ -76,10 +78,10 @@ public class AsteroidManager : Singleton<AsteroidManager>
     //[SerializeField] private float  _maximumScale  = 1.5f;
     //[SerializeField] private float  _minimumScale  = 0.5f;
 
-    //private readonly string         _assetsPath = "Assets/3D_Sci-fi_asteroid_belt_group_01/Built_in_RP/Prefabs";
-    //private readonly string         _assetsPath = "Assets/3rd-Party/BreakableAsteroids/Prefabs";
-    private readonly string         _assetsPath = "Assets/Scenes/Game/Prefabs/Asteroids";
-    private readonly List<Asteroid> _asteroidsList = new();
+    private readonly string           _asteroidsAssetsPath  = "Assets/Scenes/Game/Prefabs/Asteroids";
+    private readonly string           _explosionsAssetsPath = "Assets/3rd-Party/ParticleProFX/Resources/Library/Fire & Explosions";
+    private readonly List<Asteroid>   _asteroidsList        = new();
+    private readonly List<GameObject> _explosionsList       = new();  
 
     private bool      _isExploding = false;
     private float     _maximumX;
@@ -107,7 +109,7 @@ public class AsteroidManager : Singleton<AsteroidManager>
     // --------------------------------------------------------------------------
     public void LoadAsteroids()
     {
-        string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { this._assetsPath });
+        string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { this._asteroidsAssetsPath });
 
         foreach (string guid in guids)
         {
@@ -118,6 +120,29 @@ public class AsteroidManager : Singleton<AsteroidManager>
         }
 
     }   // LoadAsteroids()
+    #endregion
+
+
+    #region .  LoadExplosions()  .
+    // -------------------------------------------------------------------------
+    //  Method.......:  LoadExplosions()
+    //  Description..:  
+    //  Parameters...:  label
+    //  Returns......:  Nothing
+    // --------------------------------------------------------------------------
+    public void LoadExplosions()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { this._explosionsAssetsPath });
+
+        foreach (string guid in guids)
+        {
+            string     path      = AssetDatabase.GUIDToAssetPath(guid);
+            GameObject explosion = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+            this._explosionsList.Add(explosion);
+        }
+
+    }   // LoadExplosions()
     #endregion
 
 
@@ -383,8 +408,9 @@ public class AsteroidManager : Singleton<AsteroidManager>
         this._maximumY = mainCamera.ScreenToWorldPoint(new Vector3(0.0f,         Screen.height, -cameraPosition.z)).y;
         this._minimumY = mainCamera.ScreenToWorldPoint(new Vector3(0.0f,         0.0f,          -cameraPosition.z)).y;
 
-        // Get a list of the asteroid prefabs.
+        // Get a list of the asteroid and explosion prefabs.
         this.LoadAsteroids();
+        this.LoadExplosions();
 
         // Spawn the first asteroid.
         StartCoroutine(this.SpawnAsteroid());
@@ -412,7 +438,8 @@ public class AsteroidManager : Singleton<AsteroidManager>
         {
             this._isExploding = true;
 
-            Instantiate(this.ExplosionEffect, asteroid.transform.position, Quaternion.Euler(0.0f, 0.0f, 0.0f));
+            GameObject explosion = this._explosionsList[Random.Range(0, this._explosionsList.Count - 1)];
+            Instantiate(explosion, asteroid.transform.position, Quaternion.Euler(0.0f, 0.0f, 0.0f));
             SoundManager.Instance.PlaySound(this._audioClipAsteroidDestroyed);
 
             // Destroy the asteroid.

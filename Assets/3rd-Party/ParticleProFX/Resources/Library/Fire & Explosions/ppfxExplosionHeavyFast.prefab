@@ -24490,5 +24490,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 8
-  force: 10
+  force: 0
   delay: 0
