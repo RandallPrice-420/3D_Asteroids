@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: 600px; height: 30px; flex-shrink: 0;">
+        <ui:Label tabindex="-1" text="Score:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScoreLabel" style="-unity-font-style: bold; font-size: 12px; position: absolute; left: 0; flex-direction: row; right: 549px;" />
+        <ui:Label tabindex="-1" text="123,456,789" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScoreValue" style="position: absolute; left: 50px; font-size: 12px; -unity-font-style: bold; flex-direction: row;" />
+        <ui:Label tabindex="-1" text="Asteroid:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AsteroidLabel" style="position: absolute; left: 150px; font-size: 12px; -unity-font-style: bold; flex-direction: row; right: 382px;" />
+        <ui:Label tabindex="-1" text="{asteroid}" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AsteroidValue" style="position: absolute; left: 220px; font-size: 12px; -unity-font-style: bold; flex-direction: row;" />
+    </ui:VisualElement>
+</ui:UXML>

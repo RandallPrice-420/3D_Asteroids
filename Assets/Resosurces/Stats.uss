@@ -1,0 +1,34 @@
+.stats-label {
+    flex-direction: row;
+    -unity-font-style: bold;
+    font-size: 18px;
+    -unity-text-align: middle-left;
+    color: rgb(200, 200, 40);
+    height: 20px;
+    flex-grow: 0;
+    align-items: auto;
+    margin-left: 0;
+}
+
+.stats-value {
+    height: 20px;
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+    flex-direction: row;
+    color: rgb(0, 229, 255);
+    align-items: auto;
+}
+
+.spacer-label-1 {
+    align-items: auto;
+    flex-direction: row;
+    padding-left: 10px;
+}
+
+.spacer-label-2 {
+    align-items: auto;
+    flex-direction: row;
+    padding-left: 20px;
+    flex-shrink: 0;
+}
