@@ -152,8 +152,11 @@ public class Asteroid : Singleton<Asteroid>
     //   Returns......:  Nothing
     // -------------------------------------------------------------------------
     private void Start()
-    {
-        Vector3 randomDirection3D = Utils.RandomDirection3D();
+      {
+        float randomSpeed = UnityEngine.Random.Range(100.0f, 200.0f);
+        Vector3 randomDirection3D = Utils.RandomDirection3D() * randomSpeed;
+        randomDirection3D.z = 0f;
+
         this._rigidbody.AddForce(randomDirection3D);
 
     }   // Start()

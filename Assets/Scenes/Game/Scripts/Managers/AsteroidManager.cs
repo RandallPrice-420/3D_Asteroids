@@ -33,7 +33,6 @@ public class AsteroidManager : Singleton<AsteroidManager>
     //   MinTorque
     //   MaxTorque
     //   SpawnInterval
-    //   ExplosionEffect
     //   HitEffect
     // -------------------------------------------------------------------------
 
@@ -43,13 +42,12 @@ public class AsteroidManager : Singleton<AsteroidManager>
     public int        CountAsteroidsDestroyed = 0;
     public int        CouhtAsteroidsExisting  = 0;
     public int        CountAsteroidsMissed    = 0;
-    public float      MinThrust               = 10f;
-    public float      MaxThrust               = 100f;
-    public float      MinTorque               = 10f;
-    public float      MaxTorque               = 100f;
-    public float      SpawnInterval           = 4.0f;
+    public float      MinThrust               =  10.0f;
+    public float      MaxThrust               = 100.0f;
+    public float      MinTorque               =  10.0f;
+    public float      MaxTorque               = 100.0f;
+    public float      SpawnInterval           =   4.0f;
 
-    public GameObject ExplosionEffect;
     public GameObject HitEffect;
 
     #endregion
@@ -224,25 +222,24 @@ public class AsteroidManager : Singleton<AsteroidManager>
     //            spawnY = Random.Range(this._maximumY + this._minimumScale + scale, this._maximumY + this._maximumScale + scale);
     //        }
 
-    //        // Avoiding spawning 2 asteroids on top of each other.
-    //        Collider[] collidersBuffer = new Collider[16];
-
     //        //if (spawnX < this._minimumX) spawnX = this._minimumX;
     //        //if (spawnX > this._maximumX) spawnX = this._maximumX;
     //        //if (spawnY < this._minimumY) spawnY = this._minimumY;
     //        //if (spawnY > this._maximumY) spawnY = this._maximumY;
 
+    //        // Avoiding spawning 2 asteroids on top of each other.
+    //        Collider[] collidersBuffer = new Collider[16];
     //        int size = Physics.OverlapBoxNonAlloc(new Vector3(spawnX, spawnY, 0.0f), new Vector3(1.0f, 1.0f, 0.0f), collidersBuffer);
 
     //        isOverlap = (size > 0);
 
     //    } while (isOverlap);
 
-    //    int randomIndex = Random.Range(0, this._asteroidPrefabs.Length - 1);
-
     //    print($"Asteroid position:  {new Vector3(spawnX, spawnY, 0.0f)}");
 
-    //    GameObject asteroid = Instantiate(this._asteroidPrefabs[13], new Vector3(spawnX, spawnY, 0.0f), Quaternion.Euler(0.0f, 0.0f, 0.0f));
+    //    int randomIndex = Random.Range(0, this._asteroidPrefabs.Length - 1);
+
+    //    GameObject asteroid = Instantiate(this._asteroidPrefabs[randomIndex], new Vector3(spawnX, spawnY, 0.0f), Quaternion.Euler(0.0f, 0.0f, 0.0f));
     //    asteroid.transform.LookAt(this._screenCenter);
     //    asteroid.transform.localScale = new Vector3(scale, scale, scale);
 

@@ -133,7 +133,7 @@ public class Utils : MonoBehaviour
     // --------------------------------------------------------------------------
     public static Vector3 RandomDirection3D()
     {
-        Vector3 randomDirection = Random.onUnitSphere.normalized;
+        Vector3 randomDirection = Random.onUnitSphere;  //.normalized;
 
         return randomDirection;
 

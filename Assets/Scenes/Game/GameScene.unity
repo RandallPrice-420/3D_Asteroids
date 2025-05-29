@@ -2159,7 +2159,6 @@ MonoBehaviour:
   MinTorque: 10
   MaxTorque: 100
   SpawnInterval: 4
-  ExplosionEffect: {fileID: 100000, guid: 10f42fca98dc28042b22d432c3e4095b, type: 3}
   HitEffect: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
 --- !u!1 &1327208789
 GameObject:
