@@ -120,7 +120,8 @@ if "%commit_message%"=="Q" goto Done
 git pull origin master
 git add .
 git commit -m "%commit_message%"
-git lfs push -u origin master
+git lfs push --all origin
+rem git push -u origin master
 @echo off
 
 echo.
