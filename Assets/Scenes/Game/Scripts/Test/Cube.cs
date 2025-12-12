@@ -18,7 +18,7 @@ public class Cube : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(this.transform.position);
+        //Debug.Log(this.transform.position);
 
         //Vector3 mouseScreenPosition = Input.mousePosition;
         //Ray ray = mainCamera.ScreenPointToRay(mouseScreenPosition); // Create a ray

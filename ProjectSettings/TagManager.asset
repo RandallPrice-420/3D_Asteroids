@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Spaceship
   - Asteroid
+  - Cannon
   - Laser
+  - Gun
   layers:
   - Default
   - TransparentFX
@@ -14,8 +16,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Canvas
+  - PrefadContainer
   - 
   - 
   - 
@@ -43,4 +45,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Canvas
+    uniqueID: 727218927
+    locked: 0
+  - name: PrefabContainer
+    uniqueID: 4139171377
     locked: 0

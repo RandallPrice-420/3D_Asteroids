@@ -15,6 +15,7 @@ public class Utils : MonoBehaviour
     //   RandomDirection3D()
     //   RandomVector3D()
     //   RecalculateTangents()
+    //   Rotatable()
     //   SetZToZero()
     // -------------------------------------------------------------------------
 
@@ -46,6 +47,32 @@ public class Utils : MonoBehaviour
     #endregion
 
 
+    #region .  LoadAssets()  .  
+    // -------------------------------------------------------------------------  
+    //  Method.......:  LoadAssets()  
+    //  Description..:  
+    //  Parameters...:  string  - full path to the assets to load.
+    //                  string  - filter to apply when loading assets.
+    //  Returns......:  List<T> - a list of loaded assets of type T.
+    // --------------------------------------------------------------------------  
+    public static List<T> LoadAssets<T>(string assetsPath, string filter) where T : Object
+    {
+        List<T>  assets = new();
+        string[] guids  = AssetDatabase.FindAssets(filter, new string[] { assetsPath });
+
+        foreach (string guid in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            T asset     = AssetDatabase.LoadAssetAtPath<T>(path);
+            assets.Add(asset);
+        }
+
+        return assets;
+
+    }   // LoadAssets()  
+    #endregion
+
+
     #region .  LoadAssets()  .
     // -------------------------------------------------------------------------
     //  Method.......:  LoadAssets()
@@ -55,7 +82,7 @@ public class Utils : MonoBehaviour
     // --------------------------------------------------------------------------
     public static List<GameObject> LoadAssets(string assetsPath)
     {
-        List<GameObject> assetsList = new List<GameObject>();
+        List<GameObject> assetsList = new();
 
         string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { assetsPath });
 
@@ -76,12 +103,12 @@ public class Utils : MonoBehaviour
     // -------------------------------------------------------------------------
     //  Method.......:  LoadAsteroidAssets()
     //  Description..:  
-    //  Parameters...:  label
-    //  Returns......:  Nothing
+    //  Parameters...:  string - full path to the assets to load.
+    //  Returns......:  List<Asteroid> - a list of loaded Asteroid assets.
     // --------------------------------------------------------------------------
     public static List<Asteroid> LoadAsteroidAssets(string assetsPath)
     {
-        List<Asteroid> assetsList = new List<Asteroid>();
+        List<Asteroid> assetsList = new();
 
         string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { assetsPath });
 
@@ -102,12 +129,12 @@ public class Utils : MonoBehaviour
     // -------------------------------------------------------------------------
     //  Method.......:  LoadSpaceshipAssets()
     //  Description..:  
-    //  Parameters...:  label
-    //  Returns......:  Nothing
+    //  Parameters...:  string - full path to the assets to load.
+    //  Returns......:  List<Spaceship> - a list of loaded Spaceship assets.
     // --------------------------------------------------------------------------
     public static List<Spaceship> LoadSpaceshipAssets(string assetsPath)
     {
-        List<Spaceship> assetsList = new List<Spaceship>();
+        List<Spaceship> assets = new();
 
         string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { assetsPath });
 
@@ -115,10 +142,10 @@ public class Utils : MonoBehaviour
         {
             string    path  = AssetDatabase.GUIDToAssetPath(guid);
             Spaceship asset = AssetDatabase.LoadAssetAtPath<Spaceship>(path);
-            assetsList.Add(asset);
+            assets.Add(asset);
         }
 
-        return assetsList;
+        return assets;
 
     }   // LoadSpaceshipAssets()
     #endregion

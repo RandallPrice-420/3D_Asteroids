@@ -67,14 +67,15 @@ public class AsteroidManager : Singleton<AsteroidManager>
     //   _minimumX
     //   _maximumY
     //   _minimumY
+    //   _screenCenter
     //   _audioClipAsteroidDestroyed
     //   _audioClipLaserHitAsteroid
     // -------------------------------------------------------------------------
 
     #region .  Private Properties  .
 
-    //[SerializeField] private float  _maximumScale  = 1.5f;
-    //[SerializeField] private float  _minimumScale  = 0.5f;
+    [SerializeField] private float  _maximumScale  = 1.5f;
+    [SerializeField] private float  _minimumScale  = 0.5f;
 
     private readonly string           _asteroidsAssetsPath  = "Assets/Scenes/Game/Prefabs/Asteroids";
     private readonly string           _explosionsAssetsPath = "Assets/3rd-Party/ParticleProFX/Resources/Library/Fire & Explosions";
@@ -86,6 +87,7 @@ public class AsteroidManager : Singleton<AsteroidManager>
     private float     _minimumX;
     private float     _maximumY;
     private float     _minimumY;
+    private Vector3   _screenCenter;
     private AudioClip _audioClipAsteroidDestroyed;
     private AudioClip _audioClipLaserHitAsteroid;
 
@@ -148,7 +150,7 @@ public class AsteroidManager : Singleton<AsteroidManager>
     // Private Methods:
     // ----------------
     //   InstantiateAsteroid()
-    //   InstantiateRandomAsteroid()  --  COMMENTED OUT
+    //   InstantiateRandomAsteroid()
     //   OnAsteroidCollisionEnter()   --  DOES NOTHING YET
     //   OnAsteroidCreated()
     //   OnAsteroidDestroyed()        --  COMMENTED OUT
@@ -183,67 +185,68 @@ public class AsteroidManager : Singleton<AsteroidManager>
     #endregion
 
 
-    #region .  InstantiateRandomAsteroid()  --  COMMENTED OUT  .
-    //// -------------------------------------------------------------------------
-    ////   Method.......:  InstantiateRandomAsteroid()
-    ////   Description..:  
-    ////   Parameters...:  None
-    ////   Returns......:  Nothing
-    //// -------------------------------------------------------------------------
-    //private void InstantiateRandomAsteroid()
-    //{
-    //    bool  isOverlap = true;
-    //    float scale     = Random.Range(this._minimumScale, this._maximumScale);
-    //    float spawnX    = 0;
-    //    float spawnY    = 0;
+    #region .  InstantiateRandomAsteroid()  .
+    // -------------------------------------------------------------------------
+    //   Method.......:  InstantiateRandomAsteroid()
+    //   Description..:  
+    //   Parameters...:  None
+    //   Returns......:  Nothing
+    // -------------------------------------------------------------------------
+    private void InstantiateRandomAsteroid()
+    {
+        bool  isOverlap;
+        float spawnX;
+        float spawnY;
+        float scale = Random.Range(this._minimumScale, this._maximumScale);
 
-    //    do
-    //    {
-    //        float randomValue = Random.value;
+        do
+        {
+            float randomValue = Random.value;
 
-    //        if (randomValue > 0.75f)
-    //        {
-    //            spawnX = Random.Range(this._minimumX - this._maximumScale - scale, this._minimumX - this._minimumScale - scale);
-    //            spawnY = Random.Range(this._minimumY,  this._maximumY);
-    //        }
-    //        else if (randomValue > 0.50f)
-    //        {
-    //            spawnX = Random.Range(this._maximumX + this._minimumScale + scale, this._maximumX + this._maximumScale + scale);
-    //            spawnY = Random.Range(this._minimumY,  this._maximumY);
-    //        }
-    //        else if (randomValue > 0.25f)
-    //        {
-    //            spawnX = Random.Range(this._minimumX,  this._maximumX);
-    //            spawnY = Random.Range(this._minimumY - this._maximumScale - scale, this._minimumY - this._minimumScale - scale);
-    //        }
-    //        else
-    //        {
-    //            spawnX = Random.Range(this._minimumX,  this._maximumX);
-    //            spawnY = Random.Range(this._maximumY + this._minimumScale + scale, this._maximumY + this._maximumScale + scale);
-    //        }
+            if (randomValue > 0.75f)
+            {
+                spawnX = Random.Range(this._minimumX - this._maximumScale - scale, this._minimumX - this._minimumScale - scale);
+                spawnY = Random.Range(this._minimumY,  this._maximumY);
+            }
+            else if (randomValue > 0.50f)
+            {
+                spawnX = Random.Range(this._maximumX + this._minimumScale + scale, this._maximumX + this._maximumScale + scale);
+                spawnY = Random.Range(this._minimumY,  this._maximumY);
+            }
+            else if (randomValue > 0.25f)
+            {
+                spawnX = Random.Range(this._minimumX,  this._maximumX);
+                spawnY = Random.Range(this._minimumY - this._maximumScale - scale, this._minimumY - this._minimumScale - scale);
+            }
+            else
+            {
+                spawnX = Random.Range(this._minimumX,  this._maximumX);
+                spawnY = Random.Range(this._maximumY + this._minimumScale + scale, this._maximumY + this._maximumScale + scale);
+            }
 
-    //        //if (spawnX < this._minimumX) spawnX = this._minimumX;
-    //        //if (spawnX > this._maximumX) spawnX = this._maximumX;
-    //        //if (spawnY < this._minimumY) spawnY = this._minimumY;
-    //        //if (spawnY > this._maximumY) spawnY = this._maximumY;
+            if (spawnX < this._minimumX) spawnX = this._minimumX;
+            if (spawnX > this._maximumX) spawnX = this._maximumX;
+            if (spawnY < this._minimumY) spawnY = this._minimumY;
+            if (spawnY > this._maximumY) spawnY = this._maximumY;
 
-    //        // Avoiding spawning 2 asteroids on top of each other.
-    //        Collider[] collidersBuffer = new Collider[16];
-    //        int size = Physics.OverlapBoxNonAlloc(new Vector3(spawnX, spawnY, 0.0f), new Vector3(1.0f, 1.0f, 0.0f), collidersBuffer);
+            // Avoiding spawning 2 asteroids on top of each other.
+            Collider[] collidersBuffer = new Collider[16];
+            int size = Physics.OverlapBoxNonAlloc(new Vector3(spawnX, spawnY, 0.0f), new Vector3(1.0f, 1.0f, 0.0f), collidersBuffer);
 
-    //        isOverlap = (size > 0);
+            isOverlap = (size > 0);
 
-    //    } while (isOverlap);
+        } while (isOverlap);
 
-    //    print($"Asteroid position:  {new Vector3(spawnX, spawnY, 0.0f)}");
+        //Debug.Log($"Asteroid position:  {new Vector3(spawnX, spawnY, 0.0f)}");
 
-    //    int randomIndex = Random.Range(0, this._asteroidPrefabs.Length - 1);
+        int randomIndex = Random.Range(0, this._asteroidsList.Count - 1);
 
-    //    GameObject asteroid = Instantiate(this._asteroidPrefabs[randomIndex], new Vector3(spawnX, spawnY, 0.0f), Quaternion.Euler(0.0f, 0.0f, 0.0f));
-    //    asteroid.transform.LookAt(this._screenCenter);
-    //    asteroid.transform.localScale = new Vector3(scale, scale, scale);
+        Asteroid asteroid = Instantiate<Asteroid>(this._asteroidsList[randomIndex], new Vector3(spawnX, spawnY, 0.0f), Quaternion.Euler(0.0f, 0.0f, 0.0f));
+        asteroid.transform.LookAt(this._screenCenter);
+        asteroid.transform.localScale = new Vector3(scale, scale, scale);
+        asteroid.transform.rotation  *= Quaternion.FromToRotation(Vector3.left, Vector3.forward);
 
-    //}   // InstantiateRandomAsteroid()
+    }   // InstantiateRandomAsteroid()
     #endregion
 
 
@@ -376,7 +379,8 @@ public class AsteroidManager : Singleton<AsteroidManager>
         {
             yield return new WaitForSeconds(this.SpawnInterval);
 
-            this.InstantiateAsteroid();
+            //this.InstantiateAsteroid();
+            this.InstantiateRandomAsteroid();
         }
 
     }   // SpawnAsteroid()
@@ -404,6 +408,8 @@ public class AsteroidManager : Singleton<AsteroidManager>
         this._minimumX = mainCamera.ScreenToWorldPoint(new Vector3(0.0f,         0.0f,          -cameraPosition.z)).x;
         this._maximumY = mainCamera.ScreenToWorldPoint(new Vector3(0.0f,         Screen.height, -cameraPosition.z)).y;
         this._minimumY = mainCamera.ScreenToWorldPoint(new Vector3(0.0f,         0.0f,          -cameraPosition.z)).y;
+
+        this._screenCenter = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2.0f, Screen.height / 2.0f, 0.0f));
 
         // Get a list of the asteroid and explosion prefabs.
         this.LoadAsteroids();

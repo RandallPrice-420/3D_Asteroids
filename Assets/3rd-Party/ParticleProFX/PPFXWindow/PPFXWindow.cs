@@ -15,16 +15,16 @@ using System.IO;
 
 public class PPFXWindow : EditorWindow {
 		
-	static string pfxAssetPath = "ParticleProFX/Resources/Library";
+	static readonly string pfxAssetPath = "ParticleProFX/Resources/Library";
 	//static string pfxLogoPath = "ParticleProFX/PPFXEditor/logo.png";
 	//static string pfxEditorPath = "ParticleProFX/PPFXEditor";
 	
 	//folders
 	static string[] pfxFolders = new string[]{};
 	//Save Prefabs
-	static List<Object[] > pfxPrefabList = new List<Object[]>(); 
+	static List<Object[] > pfxPrefabList = new(); 
 	//Save Preview images
-	static List<Texture[]> pfxPreviewImageList = new List<Texture[]>();
+	static List<Texture[]> pfxPreviewImageList = new();
 	
 	
 	static int[] pfxAssetCount = new int[]{};
@@ -40,7 +40,7 @@ public class PPFXWindow : EditorWindow {
 	//=======================================
 	static PPFXWindow window;
 	//using enum for eventually adding further toolbar actions
-	enum toolbarActions{
+	enum ToolbarActionsEnum{
 		Refresh,
 	};
 	
@@ -48,18 +48,18 @@ public class PPFXWindow : EditorWindow {
 	int selFolderIndex = 0; 
 	string selPrefabName = ""; //current selected prefab name
 	
-	static List<Vector2> pfxGUIScrollPos = new List<Vector2>();
+	static readonly List<Vector2> pfxGUIScrollPos = new();
 	
 	int pfxGUIButtonWidth = 80;
 	int pfxGUIButtonHeight = 80;
 	
 	//Gui Toggle
-	static List<bool> pfxListToggle = new List<bool>();
+	static readonly List<bool> pfxListToggle = new();
 	
 	//preview texture
 	Camera pfxPreviewCam;
 	RenderTexture pfxPreview;
-	int pfxPreviewHeight = 200;
+    readonly int pfxPreviewHeight = 200;
 	
 	bool pfxTurntable = false;
 	
@@ -82,12 +82,13 @@ public class PPFXWindow : EditorWindow {
 	
 	void OnEnable(){
 	#if UNITY_EDITOR
-	    EditorApplication.playmodeStateChanged += StateChange;
+	    EditorApplication.playModeStateChanged +=  StateChange;
 	#endif
 	}
-	 
-	#if UNITY_EDITOR
-	void StateChange(){
+
+#if UNITY_EDITOR
+    void StateChange(PlayModeStateChange state)
+	{
 	    if (!EditorApplication.isPlayingOrWillChangePlaymode && !Application.isPlaying)
 	    {
 	   
@@ -118,7 +119,7 @@ public class PPFXWindow : EditorWindow {
 			
 			if(pfxPreviewCam == null)
 			{
-				GameObject _tmp = new GameObject();
+				GameObject _tmp = new();
 				_tmp.AddComponent<Camera>();
 				_tmp.name = "PPFXPreviewCam";
 				
@@ -130,10 +131,12 @@ public class PPFXWindow : EditorWindow {
 			
 			if(pfxTransformContainer == null)
 			{
-				GameObject _tmp2 = new GameObject();
-				_tmp2.name = "PPFX";
-				
-				pfxTransformContainer = _tmp2;
+                GameObject _tmp2 = new()
+                {
+                    name = "PPFX"
+                };
+
+                pfxTransformContainer = _tmp2;
 				pfxTransformContainer.transform.position = new Vector3(1000,1000,1000);
 			}else{
 				Transform _transform = GameObject.Find("PPFX").GetComponent<Transform>();
@@ -169,7 +172,7 @@ public class PPFXWindow : EditorWindow {
 								pfxPreviewHeight, 
 								(int)RenderTextureFormat.ARGB32 );
 			if(pfxTurntable && pfxPreviewContainer != null){
-				pfxParentContainer.transform.Rotate(Vector3.up * Time.deltaTime*100000f, Space.Self);
+				pfxParentContainer.transform.Rotate(100000f * Time.deltaTime * Vector3.up, Space.Self);
 			}
 		}
 	}
@@ -316,7 +319,7 @@ public class PPFXWindow : EditorWindow {
 		EditorGUILayout.BeginHorizontal();
 			if(GUILayout.Button("refresh", EditorStyles.toolbarButton))
 			{
-				ToolbarActions(toolbarActions.Refresh);
+				ToolbarActions(ToolbarActionsEnum.Refresh);
 			}	
 		EditorGUILayout.EndHorizontal();
 		
@@ -385,7 +388,7 @@ public class PPFXWindow : EditorWindow {
 	{
 	
 		//define some custom gui styles
-		GUIStyle pfxGUIBoxWhite = new GUIStyle(GUI.skin.box);
+		GUIStyle pfxGUIBoxWhite = new(GUI.skin.box);
 		pfxGUIBoxWhite.normal.textColor = Color.white;
 		
 		//GUI.skin.button.alignment = TextAnchor.MiddleCenter;
@@ -516,9 +519,11 @@ public class PPFXWindow : EditorWindow {
 		}
 		else
 		{
-			pfxParentContainer = new GameObject();
-			pfxParentContainer.name = "PPFXParent";
-			pfxParentContainer.transform.parent = pfxTransformContainer.transform;
+            pfxParentContainer = new GameObject
+            {
+                name = "PPFXParent"
+            };
+            pfxParentContainer.transform.parent = pfxTransformContainer.transform;
 			
 			_particle.transform.parent = pfxParentContainer.transform;
 			
@@ -526,8 +531,7 @@ public class PPFXWindow : EditorWindow {
 		pfxParentContainer.transform.localPosition = new Vector3(0,0,0);
 		
 		//set loop true
-		ParticleSystem _pSys = _particle.GetComponent<ParticleSystem>();
-		if(_pSys!=null)
+		if(_particle.TryGetComponent<ParticleSystem>(out var _pSys))
 		{
 			#if UNITY_5_5_OR_NEWER
 				var _m = _pSys.main;
@@ -558,11 +562,11 @@ public class PPFXWindow : EditorWindow {
 	//=======================================
 	//TOOLBAR ACTIONS
 	//=======================================
-	void ToolbarActions(toolbarActions _action)
+	void ToolbarActions(ToolbarActionsEnum _action)
 	{
 		switch(_action)
 		{
-			case toolbarActions.Refresh:
+			case ToolbarActionsEnum.Refresh:
 				pfxPrefabList = new List<Object[]>();
 				pfxPreviewImageList = new List<Texture[]>();
 				pfxAssetCount = new int[]{0,0,0,0};
@@ -580,7 +584,7 @@ public class PPFXWindow : EditorWindow {
 		//pekPreview	
 		RenderTexture.active = pfxPreview;
 		pfxPreviewCam.targetTexture = pfxPreview; 
-		Texture2D _previewImg =  new Texture2D(200,200, TextureFormat.RGB24, false);
+		Texture2D _previewImg =  new(200,200, TextureFormat.RGB24, false);
 		
 		_previewImg.ReadPixels(new Rect((position.width-200)/2, 0, pfxPreview.width, 200), 0, 0);
 		_previewImg.Apply();

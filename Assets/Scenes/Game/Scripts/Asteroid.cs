@@ -10,6 +10,7 @@ public class Asteroid : Singleton<Asteroid>
     //   OnAsteroidCollisionEnter
     //   OnAsteroidCreated
     //   OnAsteroidLeavesScreen
+    //   OnAsteroidMoved
     //   OnAsteroidTriggerEnter
     // -------------------------------------------------------------------------
 
@@ -19,6 +20,7 @@ public class Asteroid : Singleton<Asteroid>
     public static event Action<Asteroid>            OnAsteroidCreated        = delegate { };
     public static event Action<Asteroid>            OnAsteroidDestroyed      = delegate { };
     public static event Action<Asteroid>            OnAsteroidLeavesScreen   = delegate { };
+    public static event Action<Asteroid>            OnAsteroidMoved          = delegate { };
     public static event Action<Asteroid, Collider>  OnAsteroidTriggerEnter   = delegate { };
 
     #endregion
@@ -61,6 +63,7 @@ public class Asteroid : Singleton<Asteroid>
     // ----------------
     //   Awake()
     //   Die()  --  COMMENTED OUT
+    //   FixedUpdate()
     //   OnCollisionEnter()
     //   OnTriggerEnter()
     //   Start()
@@ -105,6 +108,22 @@ public class Asteroid : Singleton<Asteroid>
     //    }
 
     //}   // Die()
+    #endregion
+
+
+    #region .  FixedUpdate()  .
+    // -------------------------------------------------------------------------
+    //   Method.......:  FixedUpdate()
+    //   Description..:  
+    //   Parameters...:  None
+    //   Returns......:  Nothing
+    // -------------------------------------------------------------------------
+    private void FixedUpdate()
+    {
+        // Fire this event.
+        OnAsteroidMoved?.Invoke(this);
+
+    }   // FixedUpdate()
     #endregion
 
 

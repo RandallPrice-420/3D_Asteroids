@@ -5,16 +5,30 @@ using UnityEngine;
 public class SpaceshipManager : MonoBehaviour
 {
     // -------------------------------------------------------------------------
+    // Public Properties:
+    // ------------------
+    //   AssetsPath
+    //   RotationSpeed
+    // -------------------------------------------------------------------------
+
+    #region .  Public Properties  .
+
+    public float  RotationSpeed = 50;
+    public string AssetsPath    = "Assets/Shared/Prefabs/Spaceships";
+    //public readonly string _assetsPath     = "Assets/3rd-Party/Spaceships/Prefabs";
+
+    #endregion
+
+
+    // -------------------------------------------------------------------------
     // Private Properties:
     // -------------------
-    //   _assetsPath
     //   _spaceship
     //   _spaceshipsList
     // -------------------------------------------------------------------------
 
     #region .  Private Properties  .
 
-    private readonly string _assetsPath     = "Assets/3rd-Party/Spaceships/Prefabs";
     private Spaceship       _spaceship;
     private List<Spaceship> _spaceshipsList = new();
 
@@ -57,7 +71,7 @@ public class SpaceshipManager : MonoBehaviour
     // --------------------------------------------------------------------------
     private void LoadSpaceships()
     {
-        this._spaceshipsList = Utils.LoadSpaceshipAssets(this._assetsPath);
+        this._spaceshipsList = Utils.LoadSpaceshipAssets(this.AssetsPath);
 
     }   // LoadSpaceships()
     #endregion

@@ -8,12 +8,14 @@ public class GameManager : Singleton<GameManager>
     // -------------------------------------------------------------------------
     // Public Events:
     // --------------
-    //   OnAsteroidDestroyed
+    //   OnAsteroidDestroyed_Score
+    //   OnLevelChanged
     // -------------------------------------------------------------------------
 
     #region .  Public Events  .
 
-    public static event Action OnAsteroidDestroyed_2 = delegate { };
+    public static event Action OnAsteroidDestroyed_Score = delegate { };
+    public static event Action OnLevelChanged            = delegate { };
 
     #endregion
 
@@ -23,6 +25,8 @@ public class GameManager : Singleton<GameManager>
     // ------------------
     //   AvailableLives
     //   IsGameStarted
+    //   IsMainMenuRun
+    //   Level
     //   Lives
     //   Score
     //   PanelGameOver
@@ -31,12 +35,15 @@ public class GameManager : Singleton<GameManager>
 
     #region .  Public Properties  .
 
+    public bool       IsMainMenuRun;
+
     public int        AvailableLives = 3;
     public bool       IsGameStarted  = false;
+    public int        Level          = 1;
     public int        Lives          = 0;
     public int        Score          = 0;
-    public GameObject PanelGameOver;
-    public GameObject PanelVictory;
+    //public GameObject PanelGameOver;
+    //public GameObject PanelVictory;
 
     #endregion
 
@@ -57,8 +64,8 @@ public class GameManager : Singleton<GameManager>
     // --------------------------------------------------------------
     public void RestartGame()
     {
-        PanelGameOver.SetActive(false);
-        PanelVictory .SetActive(false);
+        //PanelGameOver.SetActive(false);
+        //PanelVictory .SetActive(false);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
@@ -75,8 +82,8 @@ public class GameManager : Singleton<GameManager>
     // --------------------------------------------------------------
     public void ShowVictoryPanel()
     {
-        PanelGameOver.SetActive(false);
-        PanelVictory .SetActive(true);
+        //PanelGameOver.SetActive(false);
+        //PanelVictory .SetActive(true);
 
     }   // ShowVictoryPanel()
     #endregion
@@ -89,6 +96,7 @@ public class GameManager : Singleton<GameManager>
     //   OnAsteroidDestroyed()
     //   OnDisable()
     //   OnEnable()
+    //   Start()
     // -------------------------------------------------------------------------
 
     #region .  Awake()  .
@@ -119,7 +127,7 @@ public class GameManager : Singleton<GameManager>
     {
         this.Score += asteroid.Points;
 
-        OnAsteroidDestroyed_2?.Invoke();
+        OnAsteroidDestroyed_Score?.Invoke();
 
     }   // OnAsteroidDestroyed()
     #endregion
@@ -152,6 +160,25 @@ public class GameManager : Singleton<GameManager>
         AsteroidManager.OnAsteroidDestroyed += this.OnAsteroidDestroyed;
 
     }   // OnEnable()
+    #endregion
+
+
+    #region .  Start()  .
+    // -------------------------------------------------------------------------
+    //  Method.......:  Start()
+    //  Description..:  
+    //  Parameters...:  asteroid
+    //  Returns......:  Nothing
+    // --------------------------------------------------------------------------
+    private void Start()
+    {
+        if (!Globals.IsMainMenuCalled)
+        {
+            SceneManager.LoadScene("MainMenuScene");
+            return;
+        }
+
+    }   // Start()
     #endregion
 
 
