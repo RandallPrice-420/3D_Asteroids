@@ -115,7 +115,7 @@ if exist %filePath% (
      del %filePath%
     echo %filePath% file deleted.
 )
-echo %project_name%>> %filePath%
+echo ^<h1^>%project_name%^<^/h1^>>> %filePath%
 echo.>> %filePath%
 echo %project_name% game using Unity %editor_version%.>> %filePath%
 echo.>> %filePath%
